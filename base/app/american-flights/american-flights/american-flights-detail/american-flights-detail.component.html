@@ -1,0 +1,192 @@
+<div class="detail american-flights-detail">
+  <div id="title-bar">
+    <div class="display">
+      <div class="col" class="page-title-bar">
+        <!-- <span class="pi pi-arrow-left back-action"></span> -->
+        <span class="page-title" [innerHTML]="pageViewTitle | translate"></span>
+      </div>
+      <app-action-bar [buttons]="leftActionBarConfig.children" (onBtnClick)='actionBarAction($event)'
+        [style.order]="isMobile?'1':'0'">
+      </app-action-bar>
+      <app-workflow-action-bar [buttons]="workflowActionBarConfig.children"
+        (onBtnClick)='workflowActionBarAction($event)' [workflow]="workflowActions" [style.order]="isMobile?'1':'0'">
+      </app-workflow-action-bar>
+      <ul class="nav  caption-bar" *ngIf="detailCaptionBarConfig"
+        [ngStyle]="{width: detailCaptionBarConfig.width, 'justify-content':detailCaptionBarConfig.align}">
+        <li class="nav-item" *ngFor="let captionItem of detailCaptionBarConfig.children"
+          [style.display]="((captionItem.showOn =='mobile_only' && isMobile) || (captionItem.showOn =='desktop_only' && !isMobile) || (captionItem.showOn =='both')||(!captionItem.showOn))?'block':'none'">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{captionItem.label | translate}}</h5>
+              <div *ngIf="!captionItem.render && captionItem.fieldType !== 'Date'" class="card-sub-title">{{(backupData
+                && (backupData[captionItem.field] )| translate)}}</div>
+              <div *ngIf="!captionItem.render && captionItem.fieldType === 'Date'" class="card-sub-title">{{backupData
+                && (backupData[captionItem.field] | date)}}</div>
+              <div *ngIf="captionItem.render" class="card-sub-title">
+                <div [innerHtml]="captionItem.render(captionItem)"></div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="ev-detail-view">
+    <div class="detail-flex-box">
+      <div class="flex align-items-center justify-content-center wizard-container" style="display:none">
+
+      </div>
+      <div class="flex align-items-center justify-content-center form-container">
+        <form class="ev-form " [formGroup]="detailFormControls" #detailForm
+          [ngClass]="{'read-only-fields':enableReadOnly}">
+          <div class="row form-body">
+            <div class="form-row vg-col-2">
+              <div class="form-col" [hidden]="hiddenFields.id">
+                <div class="field-row"
+                  [ngClass]="{'required': formFieldConfig?.id?.isRequired, 'error':inValidFields.id}">
+                  <label for="id" class="col-form-label id-label" [textContent]="'ID'|translate"></label>
+                  <span class="info-bubble" *ngIf="formFieldConfig?.id?.infoBubble"
+                    [pTooltip]="formFieldConfig?.id?.infoBubble || ''"><i class="fa fa-circle-info"></i></span>
+                  <p-inputNumber class="form-input" formControlName="id"
+                    [placeholder]="formFieldConfig?.id?.placeHolder || ''"></p-inputNumber>
+                  <div class="fst-italic fs-5 help-text">{{formFieldConfig?.id?.helpText || ''}}</div>
+                </div>
+              </div>
+              <div class="form-col" [hidden]="hiddenFields.code">
+                <div class="field-row"
+                  [ngClass]="{'required': formFieldConfig?.code?.isRequired, 'error':inValidFields.code}">
+                  <label for="code" class="col-form-label code-label" [textContent]=" 'CODE'|translate "></label>
+                  <span class="info-bubble" *ngIf="formFieldConfig?.code?.infoBubble"
+                    [pTooltip]="formFieldConfig?.code?.infoBubble || ''"><i class="fa fa-circle-info"></i></span>
+                  <input type="text " pInputText class="form-control " id="code " formControlName="code"
+                    [placeholder]="formFieldConfig?.code?.placeHolder || ''" />
+                  <div class="fst-italic fs-5 help-text">{{formFieldConfig?.code?.helpText || ''}}</div>
+                </div>
+              </div>
+              <div class="form-col" [hidden]="hiddenFields.price">
+                <div class="field-row"
+                  [ngClass]="{'required': formFieldConfig?.price?.isRequired, 'error':inValidFields.price}">
+                  <label for="price" class="col-form-label price-label" [textContent]="'PRICE'|translate"></label>
+                  <span class="info-bubble" *ngIf="formFieldConfig?.price?.infoBubble"
+                    [pTooltip]="formFieldConfig?.price?.infoBubble || ''"><i class="fa fa-circle-info"></i></span>
+                  <p-inputNumber class="form-input" formControlName="price"
+                    [placeholder]="formFieldConfig?.price?.placeHolder || ''"></p-inputNumber>
+                  <div class="fst-italic fs-5 help-text">{{formFieldConfig?.price?.helpText || ''}}</div>
+                </div>
+              </div>
+              <div class="form-col" [hidden]="hiddenFields.departuredate">
+                <div class="field-row"
+                  [ngClass]="{'required': formFieldConfig?.departuredate?.isRequired, 'error':inValidFields.departuredate}">
+                  <label for="departuredate" class="col-form-label departuredate-label"
+                    [textContent]="'DEPARTUREDATE'|translate"></label>
+                  <span class="info-bubble" *ngIf="formFieldConfig?.departuredate?.infoBubble"
+                    [pTooltip]="formFieldConfig?.departuredate?.infoBubble || ''"><i
+                      class="fa fa-circle-info"></i></span>
+                  <input type="text " pInputText class="form-control " id="departuredate " formControlName="departuredate"
+                    [placeholder]="formFieldConfig?.departuredate?.placeHolder || ''" />
+                  <div class="fst-italic fs-5 help-text">{{formFieldConfig?.departuredate?.helpText || ''}}</div>
+                </div>
+              </div>
+              <div class="form-col" [hidden]="hiddenFields.origin">
+                <div class="field-row"
+                  [ngClass]="{'required': formFieldConfig?.origin?.isRequired, 'error':inValidFields.origin}">
+                  <label for="origin" class="col-form-label origin-label" [textContent]=" 'ORIGIN'|translate "></label>
+                  <span class="info-bubble" *ngIf="formFieldConfig?.origin?.infoBubble"
+                    [pTooltip]="formFieldConfig?.origin?.infoBubble || ''"><i class="fa fa-circle-info"></i></span>
+                  <input type="text " pInputText class="form-control " id="origin " formControlName="origin"
+                    [placeholder]="formFieldConfig?.origin?.placeHolder || ''" />
+                  <div class="fst-italic fs-5 help-text">{{formFieldConfig?.origin?.helpText || ''}}</div>
+                </div>
+              </div>
+              <div class="form-col" [hidden]="hiddenFields.destination">
+                <div class="field-row"
+                  [ngClass]="{'required': formFieldConfig?.destination?.isRequired, 'error':inValidFields.destination}">
+                  <label for="destination" class="col-form-label destination-label"
+                    [textContent]=" 'DESTINATION'|translate "></label>
+                  <span class="info-bubble" *ngIf="formFieldConfig?.destination?.infoBubble"
+                    [pTooltip]="formFieldConfig?.destination?.infoBubble || ''"><i class="fa fa-circle-info"></i></span>
+                  <input type="text " pInputText class="form-control " id="destination " formControlName="destination"
+                    [placeholder]="formFieldConfig?.destination?.placeHolder || ''" />
+                  <div class="fst-italic fs-5 help-text">{{formFieldConfig?.destination?.helpText || ''}}</div>
+                </div>
+              </div>
+              <div class="form-col" [hidden]="hiddenFields.emptyseats">
+                <div class="field-row"
+                  [ngClass]="{'required': formFieldConfig?.emptyseats?.isRequired, 'error':inValidFields.emptyseats}">
+                  <label for="emptyseats" class="col-form-label emptyseats-label"
+                    [textContent]="'EMPTYSEATS'|translate"></label>
+                  <span class="info-bubble" *ngIf="formFieldConfig?.emptyseats?.infoBubble"
+                    [pTooltip]="formFieldConfig?.emptyseats?.infoBubble || ''"><i class="fa fa-circle-info"></i></span>
+                  <p-inputNumber class="form-input" formControlName="emptyseats"
+                    [placeholder]="formFieldConfig?.emptyseats?.placeHolder || ''"></p-inputNumber>
+                  <div class="fst-italic fs-5 help-text">{{formFieldConfig?.emptyseats?.helpText || ''}}</div>
+                </div>
+              </div>
+              <div class="form-col" [hidden]="hiddenFields.plane">
+                <div class="field-row"
+                  [ngClass]="{'required': formFieldConfig?.number?.isRequired, 'error':inValidFields.number}">
+                  <label for="plane" class="col-form-label plane-label" [textContent]=" 'PLANE'|translate "></label>
+                  <div class="table-edit">
+                    <p-table [value]="detailFormControls.controls.plane.value || []" dataKey="id" editMode="row">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <ng-container *ngFor="let col of formFieldConfig['plane'].columns">
+                            <th [innerHTML]="col.label | translate" *ngIf="!ignoreFields.includes(col.name)"></th>
+                          </ng-container>
+                          <th style="width:10rem" *ngIf="!detailFormControls.controls.plane.disabled"></th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                        <tr [pEditableRow]="rowData">
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input pInputText type="text" [ngModelOptions]="{standalone: true}"
+                                  [(ngModel)]="rowData.type" class="table-input">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.type}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <p-inputNumber [ngModelOptions]="{standalone: true}" [(ngModel)]="rowData.totalseats"
+                                  class="table-input"></p-inputNumber>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.totalseats}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td style="text-align:center" class="row-buttons"
+                            *ngIf="!detailFormControls.controls.plane.disabled">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                              (click)="planeRowEditInit(rowData)"
+                              class="p-button-rounded p-button-text plane_edit-btn"></button>
+                            <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-trash"
+                              (click)="planeRowDelete(rowData)"
+                              class="p-button-rounded p-button-text plane_delete-btn"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                              (click)="planeRowEditSave(rowData, $event)"
+                              class="p-button-rounded p-button-text p-button-success p-mr-2 plane_editSave-btn"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                              (click)="planeRowEditCancel(rowData)"
+                              class="p-button-rounded p-button-text p-button-danger plane_editCancel-btn"></button>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                    <button pButton type="button" label="Add" icon="pi pi-plus" (click)="planeAddNewRow()"
+                      class="new-btn" *ngIf="!detailFormControls.controls.plane.disabled"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+{
+  "left" : [ {
+    "pathsInvolved" : [ "/americanflights/americanflightsdetail", "/americanflights/americanflightslist" ],
+    "accessControl" : [ "all", "Development Administrator" ],
+    "onClick" : "navigate_to_page",
+    "valueChange" : true,
+    "currentNode" : "menuItem",
+    "label" : "Flight List",
+    "page" : {
+      "name" : "American Flights List",
+      "sid" : "ce7b476a-a2f6-483a-8fbc-96bfb4c74f81",
+      "url" : "/americanflights/americanflightslist"
+    },
+    "element" : "menuItem"
+  } ],
+  "topBarLeft" : [ ],
+  "topBarMiddle" : [ ],
+  "topBarRight" : [ ],
+  "right" : [ ]
+}
